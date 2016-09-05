@@ -72,8 +72,32 @@ module.exports = {
       }
     }
 
+    var link = function (contents, uri) {
+      if (!uri) return contents
+      console.log(myDocument)
+      var a = myDocument.createElement('a')
+      a.setAttribute('href', uri)
+      a.appendChild(contents)
+      a.addEventListener('click', UI.widgets.openHrefInOutlineMode, true)
+      return a
+    }
+
+    var text = function (str) {
+      return myDocument.createTextNode(str)
+    }
+
     var kb = UI.store
     var obj = kb.any(subject, $rdf.sym('http://purl.org/ontology/pbo/core#playlist_item'))
+    var index = kb.any(subject, $rdf.sym('http://purl.org/ontology/olo/core#index'))
+    var sl = kb.statementsMatching(null,  $rdf.sym('http://purl.org/ontology/olo/core#index'))
+    var slots = []
+    for (var i = 0; i < sl.length; i++) {
+      if (sl[i].object.value) {
+        slots.push(parseInt(sl[i].object.value))
+      }
+    }
+    console.log(slots)
+
     console.log(obj)
     var uri = obj.uri
     var video = isVideo(uri)
@@ -94,11 +118,36 @@ module.exports = {
       div.setAttribute('class', 'imageView')
       var img = myDocument.createElement('IMG')
       img.setAttribute('src', obj.value) // w640 h480
-      img.setAttribute('style', 'max-width: 100%; max-height: 100%;')
+      img.setAttribute('width', 560) // w640 h480
+      img.setAttribute('height', 315) // w640 h480
+      img.setAttribute('style', 'max-width: 560; max-height: 315;')
+    }
+
+    if (index) {
+      index = parseInt(index.value)
+      var descDiv = myDocument.createElement('div')
+
+      var pIndex = slots[(slots.indexOf(index) - 1 + slots.length ) % slots.length]
+      var nIndex = slots[(slots.indexOf(index) + 1 + slots.length ) % slots.length]
+
+      var prev = link(text('<<'), subject.uri.split('#')[0] + '#' + pIndex )
+
+      descDiv.appendChild(prev)
+
+      var indexDiv = myDocument.createElement('span')
+      indexDiv.innerHTML = ' Playlist slot : ' + index + ' '
+
+      descDiv.appendChild(indexDiv)
+
+      var next = link(text('>>'), subject.uri.split('#')[0] + '#' + nIndex )
+      descDiv.appendChild(next)
     }
 
     var tr = myDocument.createElement('TR') // why need tr?
     tr.appendChild(img)
+    if (descDiv) {
+      tr.appendChild(descDiv)
+    }
     div.appendChild(tr)
     return div
   }
