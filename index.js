@@ -83,6 +83,7 @@ paneModule.register(require('./airPane.js'))
 
 // Content views
 
+paneModule.register(require('./playlist/playlistPane.js')) // Basic playlist view
 paneModule.register(require('./imagePane.js')) // Basic image view
 
 
@@ -138,6 +139,5 @@ paneModule.register(require('./internalPane.js'))
 // The home pame is a 2016 experiment. Always there.
 paneModule.register(require('./home/homePane.js'))
 
-paneModule.register(require('./playlist/playlistPane.js')) // Basic playlist view
 
 // ENDS
