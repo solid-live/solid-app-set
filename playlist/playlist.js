@@ -5,7 +5,7 @@
 var UI = require('solid-ui')
 
 module.exports = {
-  icon: UI.icons.originalIconBase + 'tango/22-image-x-generic.png',
+  icon: UI.icons.originalIconBase + 'photo_next.png',
 
   name: 'playlistSlot',
 
