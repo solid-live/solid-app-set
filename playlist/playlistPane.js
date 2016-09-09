@@ -1,11 +1,12 @@
-/*   Image Pane
+/*   Playlist Pane
 **
-**  This outline pane contains the document contents for an Image document
+**  This pane allows playlists and playlists slots to be viewed
+**  seeAlso: http://smiy.sourceforge.net/pbo/spec/playbackontology.html
 */
 var UI = require('solid-ui')
 
 module.exports = {
-  icon: UI.icons.originalIconBase + 'photo_next.png',
+  icon: UI.icons.iconBase + 'noun_1619.svg',
 
   name: 'playlistSlot',
 
@@ -89,9 +90,7 @@ module.exports = {
       div.setAttribute('class', 'imageView')
       img = myDocument.createElement('IMG')
       img.setAttribute('src', obj.value)
-      img.setAttribute('width', 560)
-      img.setAttribute('height', 315)
-      img.setAttribute('style', 'max-width: 560; max-height: 315;')
+      img.setAttribute('style', 'max-height: 85vh;')
     }
 
     if (index) {
