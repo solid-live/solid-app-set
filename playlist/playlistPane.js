@@ -68,9 +68,9 @@ module.exports = {
     }
 
     var kb = UI.store
-    var subject = kb.any(subject, $rdf.sym('http://purl.org/ontology/pbo/core#playlist_slot'))
-    var obj = kb.any(subject, $rdf.sym('http://purl.org/ontology/pbo/core#playlist_item'))
-    var index = kb.any(subject, $rdf.sym('http://purl.org/ontology/olo/core#index'))
+    var firstSlot = kb.any(subject, $rdf.sym('http://purl.org/ontology/pbo/core#playlist_slot'))
+    var obj = kb.any(firstSlot, $rdf.sym('http://purl.org/ontology/pbo/core#playlist_item'))
+    var index = kb.any(firstSlot, $rdf.sym('http://purl.org/ontology/olo/core#index'))
 
     var uri = obj.uri
     var video = isVideo(uri)
@@ -107,22 +107,23 @@ module.exports = {
       index = parseInt(index.value)
       var titleDiv = myDocument.createElement('div')
       //var indexDiv = myDocument.createElement('span')
-      var indexDiv = link(text('Playlist : ' + index + ' / ' + sl.length), subject.uri.split('#')[0])
-      indexDiv.onclick = function() { UI.outline.GotoSubject(  UI.store.sym ( subject.uri.split('#')[0]), true, undefined, true, undefined ) }
+      var parent = kb.any(null, $rdf.sym('https://schema.org/significantLink'), subject) || $rdf.sym(subject.uri.split('#')[0])
+
+      var indexDiv = link(text('Playlist : ' + index + ' / ' + sl.length), parent.uri)
+      indexDiv.onclick = function() { UI.outline.GotoSubject( UI.store.sym (parent.uri), true, undefined, true, undefined ) }
 
       titleDiv.appendChild(indexDiv)
-
 
       var navDiv = myDocument.createElement('div')
 
       var pIndex = slots[(slots.indexOf(index) - 1 + slots.length) % slots.length]
       var nIndex = slots[(slots.indexOf(index) + 1 + slots.length) % slots.length]
 
-      var prev = link(text('❮ Previous'), subject.uri.split('#')[0] + '#' + pIndex)
+      var prev = link(text('❮ Previous'), firstSlot.uri.split('#')[0] + '#' + pIndex)
 
       navDiv.appendChild(prev)
 
-      var next = link(text('Next ❯'), subject.uri.split('#')[0] + '#' + nIndex)
+      var next = link(text('Next ❯'), firstSlot.uri.split('#')[0] + '#' + nIndex)
       next.setAttribute('style', 'float: right')
 
       navDiv.appendChild(next)
