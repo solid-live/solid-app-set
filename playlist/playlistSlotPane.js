@@ -1,25 +1,25 @@
 /*   Playlist Pane
 **
-**  This pane allows playlists to be viewed
+**  This pane allows playlist slots to be viewed
 **  seeAlso: http://smiy.sourceforge.net/pbo/spec/playbackontology.html
 */
 var UI = require('solid-ui')
 
 module.exports = {
-  icon: UI.icons.iconBase + 'noun_598334.svg',
+  icon: UI.icons.iconBase + 'noun_1619.svg',
 
-  name: 'playlist',
+  name: 'playlistSlot',
 
   label: function (subject) {
     var kb = UI.store
 
     if (!kb.anyStatementMatching(
         subject, UI.ns.rdf('type'),
-        kb.sym('http://purl.org/ontology/pbo/core#Playlist'))) {
+        kb.sym('http://purl.org/ontology/pbo/core#PlaylistSlot'))) {
       return null
     }
 
-    return 'playlist'
+    return 'playlist slot'
   },
 
   render: function (subject, myDocument) {
@@ -68,7 +68,6 @@ module.exports = {
     }
 
     var kb = UI.store
-    var subject = kb.any(subject, $rdf.sym('http://purl.org/ontology/pbo/core#playlist_slot'))
     var obj = kb.any(subject, $rdf.sym('http://purl.org/ontology/pbo/core#playlist_item'))
     var index = kb.any(subject, $rdf.sym('http://purl.org/ontology/olo/core#index'))
 
@@ -76,24 +75,6 @@ module.exports = {
     var video = isVideo(uri)
 
     var div = myDocument.createElement('div')
-    var img
-    if (video && video.youtube) {
-      uri = uri.replace('watch?v=', 'embed/')
-      div.setAttribute('class', 'imageView')
-      img = myDocument.createElement('IFRAME')
-      img.setAttribute('src', uri)
-      img.setAttribute('width', 560)
-      img.setAttribute('height', 315)
-      img.setAttribute('frameborder', 0)
-      img.setAttribute('style', 'max-width: 850px; max-height: 100%;')
-      img.setAttribute('allowfullscreen', 'true')
-    } else {
-      div.setAttribute('class', 'imageView')
-      img = myDocument.createElement('IMG')
-      img.setAttribute('src', obj.value)
-      img.setAttribute('style', 'max-height: 85vh;')
-      img.onclick = function() { UI.outline.GotoSubject(  UI.store.sym ( subject.uri.split('#')[0] + '#' + nIndex), true, undefined, true, undefined ) }
-    }
 
     if (index) {
       var sl = kb.statementsMatching(null, $rdf.sym('http://purl.org/ontology/olo/core#index'))
@@ -105,10 +86,13 @@ module.exports = {
       }
 
       index = parseInt(index.value)
+
       var titleDiv = myDocument.createElement('div')
       //var indexDiv = myDocument.createElement('span')
-      var indexDiv = link(text('Playlist : ' + index + ' / ' + sl.length), subject.uri.split('#')[0])
-      indexDiv.onclick = function() { UI.outline.GotoSubject(  UI.store.sym ( subject.uri.split('#')[0]), true, undefined, true, undefined ) }
+      var parentURI = kb.any(null, $rdf.sym('http://purl.org/ontology/pbo/core#playlist_slot'), subject)
+      var indexDiv = link(text('Viewing : ' + index + ' / ' + sl.length), parentURI.uri)
+
+      //indexDiv.onclick = function() { UI.outline.GotoSubject(  UI.store.sym ( subject.uri.split('#')[0]) + '#this', true, undefined, true, undefined ) }
 
       titleDiv.appendChild(indexDiv)
 
@@ -126,7 +110,34 @@ module.exports = {
       next.setAttribute('style', 'float: right')
 
       navDiv.appendChild(next)
+
     }
+
+
+    var img
+    if (video && video.youtube) {
+      uri = uri.replace('watch?v=', 'embed/')
+      div.setAttribute('class', 'imageView')
+      img = myDocument.createElement('IFRAME')
+      img.setAttribute('src', uri)
+      img.setAttribute('width', 560)
+      img.setAttribute('height', 315)
+      img.setAttribute('frameborder', 0)
+      img.setAttribute('style', 'max-width: 850px; max-height: 100%;')
+      img.setAttribute('allowfullscreen', 'true')
+    } else {
+      div.setAttribute('class', 'imageView')
+      img = myDocument.createElement('IMG')
+      img.setAttribute('src', obj.value)
+      img.setAttribute('style', 'max-height: 85vh;')
+      img.onclick = function() {
+        var nextURI = subject.uri.split('#')[0] + '#' + nIndex
+        UI.outline.GotoSubject(  UI.store.sym ( nextURI ), true, undefined, true, undefined )
+        history.pushState({}, nextURI, nextURI)
+        console.log('nextURI', nextURI)
+      }
+    }
+
 
     var tr = myDocument.createElement('TR') // why need tr?
     if (titleDiv) {

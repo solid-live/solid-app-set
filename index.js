@@ -84,6 +84,7 @@ paneModule.register(require('./airPane.js'))
 // Content views
 
 paneModule.register(require('./playlist/playlistPane.js')) // Basic playlist view
+paneModule.register(require('./playlist/playlistSlotPane.js')) // Basic playlist view
 paneModule.register(require('./imagePane.js')) // Basic image view
 
 
