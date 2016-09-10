@@ -96,7 +96,7 @@ module.exports = {
     }
 
     if (index) {
-      var sl = kb.statementsMatching(null, $rdf.sym('http://purl.org/ontology/olo/core#index'))
+      var sl = kb.statementsMatching(null, $rdf.sym('http://purl.org/ontology/olo/core#index'), null, $rdf.sym(subject.uri.split('#')[0]))
       var slots = []
       for (var i = 0; i < sl.length; i++) {
         if (sl[i]) {

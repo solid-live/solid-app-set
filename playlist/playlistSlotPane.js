@@ -77,13 +77,14 @@ module.exports = {
     var div = myDocument.createElement('div')
 
     if (index) {
-      var sl = kb.statementsMatching(null, $rdf.sym('http://purl.org/ontology/olo/core#index'))
+      var sl = kb.statementsMatching(null, $rdf.sym('http://purl.org/ontology/olo/core#index'), null, $rdf.sym(subject.uri.split('#')[0]))
       var slots = []
       for (var i = 0; i < sl.length; i++) {
         if (sl[i]) {
           slots.push(parseInt(sl[i].object.value))
         }
       }
+      console.log('sl', sl);
 
       index = parseInt(index.value)
 
@@ -134,7 +135,6 @@ module.exports = {
         var nextURI = subject.uri.split('#')[0] + '#' + nIndex
         UI.outline.GotoSubject(  UI.store.sym ( nextURI ), true, undefined, true, undefined )
         history.pushState({}, nextURI, nextURI)
-        console.log('nextURI', nextURI)
       }
     }
 
