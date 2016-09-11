@@ -91,8 +91,9 @@ module.exports = {
         contentEl.setAttribute('style', 'height: 100%; box-shadow: -2px 2px 2px 1px #888; webkit-box-shadow: -2px 2px 2px 1px #888;')
         contentEl.appendChild(thumb)
         linkDiv.appendChild(contentEl)
+        contentEl.href = l.uri
         contentEl.onclick = function() {
-          var contentURI = l.uri
+          var contentURI = this.href
           UI.outline.GotoSubject(  UI.store.sym ( contentURI ), true, undefined, true, undefined )
           history.pushState({}, contentURI, contentURI)
         }
