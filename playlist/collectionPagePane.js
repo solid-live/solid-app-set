@@ -94,7 +94,7 @@ module.exports = {
       }
       contentEl.setAttribute('style', 'height: 100%; box-shadow: -2px 2px 2px 1px #888; webkit-box-shadow: -2px 2px 2px 1px #888;')
 
-      linkDiv.setAttribute('style', 'float:left; width: 30%; word-wrap: break-word; margin 1%; position: relative; min-width: 150px; min-height: 150px; margin: 5px;')
+      linkDiv.setAttribute('style', 'float:left; width: 30%; word-wrap: break-word; position: relative; min-width: 150px; min-height: 150px; margin: 10px;')
       linkDiv.appendChild(contentEl)
 
       containerDiv.appendChild(linkDiv)
