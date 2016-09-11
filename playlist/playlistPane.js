@@ -109,7 +109,7 @@ module.exports = {
       //var indexDiv = myDocument.createElement('span')
       var parent = kb.any(null, $rdf.sym('https://schema.org/significantLink'), subject) || $rdf.sym(subject.uri.split('#')[0])
 
-      var indexDiv = link(text('Playlist : ' + index + ' / ' + sl.length), parent.uri)
+      var indexDiv = link(text('↑Up - ' + index + '/' + sl.length), parent.uri)
       indexDiv.onclick = function() { UI.outline.GotoSubject( UI.store.sym (parent.uri), true, undefined, true, undefined ) }
 
       titleDiv.appendChild(indexDiv)

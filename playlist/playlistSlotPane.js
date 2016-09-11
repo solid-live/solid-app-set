@@ -90,7 +90,7 @@ module.exports = {
       var titleDiv = myDocument.createElement('div')
       //var indexDiv = myDocument.createElement('span')
       var parentURI = kb.any(null, $rdf.sym('http://purl.org/ontology/pbo/core#playlist_slot'), subject)
-      var indexDiv = link(text('Viewing : ' + index + ' / ' + sl.length), parentURI.uri)
+      var indexDiv = link(text('↑Up - ' + index + '/' + sl.length), parentURI.uri)
 
       //indexDiv.onclick = function() { UI.outline.GotoSubject(  UI.store.sym ( subject.uri.split('#')[0]) + '#this', true, undefined, true, undefined ) }
 

@@ -77,6 +77,8 @@ module.exports = {
       var l = links[i].object
 
       var linkDiv = myDocument.createElement('figure')
+      linkDiv.setAttribute('style', 'float:left; width: 30%; word-wrap: break-word; position: relative; min-width: 150px; min-height: 150px; margin: 10px;')
+
       var title = kb.any(l, $rdf.sym('http://purl.org/dc/elements/1.1/title'))
       var thumbnail = kb.any(l, $rdf.sym('http://xmlns.com/foaf/0.1/thumbnail'))
       var displayText = title || i + '.' + l.uri
@@ -84,18 +86,24 @@ module.exports = {
       if (thumbnail) {
         var thumb = myDocument.createElement('IMG')
         thumb.setAttribute('src', thumbnail.uri)
+
         var contentEl = myDocument.createElement('div')
+        contentEl.setAttribute('style', 'height: 100%; box-shadow: -2px 2px 2px 1px #888; webkit-box-shadow: -2px 2px 2px 1px #888;')
         contentEl.appendChild(thumb)
+        linkDiv.appendChild(contentEl)
+        contentEl.onclick = function() {
+          var contentURI = l.uri
+          UI.outline.GotoSubject(  UI.store.sym ( contentURI ), true, undefined, true, undefined )
+          history.pushState({}, contentURI, contentURI)
+        }
+
         var caption = link(text(displayText), l.uri)
         caption.innerHTML = displayText
         linkDiv.appendChild(caption)
       } else {
         var contentEl = link(text(displayText), l.uri)
+        linkDiv.appendChild(contentEl)
       }
-      contentEl.setAttribute('style', 'height: 100%; box-shadow: -2px 2px 2px 1px #888; webkit-box-shadow: -2px 2px 2px 1px #888;')
-
-      linkDiv.setAttribute('style', 'float:left; width: 30%; word-wrap: break-word; position: relative; min-width: 150px; min-height: 150px; margin: 10px;')
-      linkDiv.appendChild(contentEl)
 
       containerDiv.appendChild(linkDiv)
     }
