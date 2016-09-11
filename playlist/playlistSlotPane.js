@@ -84,7 +84,6 @@ module.exports = {
           slots.push(parseInt(sl[i].object.value))
         }
       }
-      console.log('sl', sl);
 
       index = parseInt(index.value)
 

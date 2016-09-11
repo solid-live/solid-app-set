@@ -70,35 +70,39 @@ module.exports = {
     var kb = UI.store
     var links = kb.statementsMatching(subject, $rdf.sym('https://schema.org/significantLink'))
 
-    var div = myDocument.createElement('div')
+    var containerDiv = myDocument.createElement('div')
+    containerDiv.setAttribute('style', 'width : 100%; max-width: 1310px; margin: 0 auto; overflow: hidden; padding: 5px; text-align: center;')
 
     for (var i = 0; i < links.length; i++) {
       var l = links[i].object
 
-      var lin = myDocument.createElement('div')
-      var title = kb.any(l, $rdf.sym('http://purl.org/dc/elements/1.1/title') )
-      var thumbnail = kb.any(l, $rdf.sym('http://xmlns.com/foaf/0.1/thumbnail') )
+      var linkDiv = myDocument.createElement('figure')
+      var title = kb.any(l, $rdf.sym('http://purl.org/dc/elements/1.1/title'))
+      var thumbnail = kb.any(l, $rdf.sym('http://xmlns.com/foaf/0.1/thumbnail'))
       var displayText = title || i + '.' + l.uri
 
       if (thumbnail) {
         var thumb = myDocument.createElement('IMG')
         thumb.setAttribute('src', thumbnail.uri)
-        var sig = myDocument.createElement('div')
-        sig.appendChild(thumb)
+        var contentEl = myDocument.createElement('div')
+        contentEl.appendChild(thumb)
+        var caption = link(text(displayText), l.uri)
+        caption.innerHTML = displayText
+        linkDiv.appendChild(caption)
       } else {
-        var sig = link(text(displayText), l.uri)
+        var contentEl = link(text(displayText), l.uri)
       }
+      contentEl.setAttribute('style', 'height: 100%; box-shadow: -2px 2px 2px 1px #888; webkit-box-shadow: -2px 2px 2px 1px #888;')
 
-      sig.setAttribute('style', 'float:left; width: 30%; word-wrap: break-word; border: 2px solid gray; border-radius: 5px; margin 1%; overflow: hidden;')
-      lin.appendChild(sig)
+      linkDiv.setAttribute('style', 'float:left; width: 30%; word-wrap: break-word; margin 1%; position: relative; min-width: 150px; min-height: 150px; margin: 5px;')
+      linkDiv.appendChild(contentEl)
 
-      div.appendChild(lin)
-
+      containerDiv.appendChild(linkDiv)
     }
 
     var tr = myDocument.createElement('TR') // why need tr?
-    div.appendChild(tr)
-    return div
+    containerDiv.appendChild(tr)
+    return containerDiv
   }
 }
 
