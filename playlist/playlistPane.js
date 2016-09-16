@@ -34,6 +34,7 @@ module.exports = {
       var vimeo = src.match(/\/\/(?:www\.)?vimeo.com\/([0-9a-z\-_]+)/i)
       var dailymotion = src.match(/\/\/(?:www\.)?dai.ly\/([0-9a-z\-_]+)/i)
       var vk = src.match(/\/\/(?:www\.)?(?:vk\.com|vkontakte\.ru)\/(?:video_ext\.php\?)(.*)/i)
+      var html5 = src.match(/(\.mp4|\.mkv)$/i)
 
       if (youtube) {
         return {
@@ -50,6 +51,10 @@ module.exports = {
       } else if (vk) {
         return {
           vk: vk
+        }
+      } else if (html5) {
+        return {
+          html5: html5
         }
       }
     }
@@ -87,6 +92,11 @@ module.exports = {
       img.setAttribute('frameborder', 0)
       img.setAttribute('style', 'max-width: 850px; max-height: 100%;')
       img.setAttribute('allowfullscreen', 'true')
+    } else  if (video && video.html5) {
+      img = myDocument.createElement('VIDEO')
+      img.setAttribute('src', uri)
+      img.setAttribute('controls', true)
+      img.setAttribute('style', 'max-height: 85vh;')
     } else {
       div.setAttribute('class', 'imageView')
       img = myDocument.createElement('IMG')
