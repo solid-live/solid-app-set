@@ -88,6 +88,7 @@ paneModule.register(require('./playlist/playlistSlotPane.js')) // Basic playlist
 paneModule.register(require('./playlist/collectionPagePane.js')) // Basic playlist view
 paneModule.register(require('./imagePane.js')) // Basic image view
 
+paneModule.register(require('./credit/creditPane.js')) // Basic credit view
 
 paneModule.register(require('./classInstancePane.js')) // Should be above dataContentPane
 paneModule.register(require('./dynamic/dynamicPanes.js')) // warp etc
