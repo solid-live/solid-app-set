@@ -1,7 +1,6 @@
-/*   Playlist Pane
+/*   Collection Pane
 **
-**  This pane allows playlists to be viewed
-**  seeAlso: http://smiy.sourceforge.net/pbo/spec/playbackontology.html
+**  This pane allows collections of significant links to be viewed
 */
 var UI = require('solid-ui')
 
@@ -23,37 +22,6 @@ module.exports = {
   },
 
   render: function (subject, myDocument) {
-    function isVideo (src, index) {
-      if (!src) {
-        return {
-          html5: true
-        }
-      }
-
-      var youtube = src.match(/\/\/(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=|embed\/)?([a-z0-9\-_%]+)/i)
-      var vimeo = src.match(/\/\/(?:www\.)?vimeo.com\/([0-9a-z\-_]+)/i)
-      var dailymotion = src.match(/\/\/(?:www\.)?dai.ly\/([0-9a-z\-_]+)/i)
-      var vk = src.match(/\/\/(?:www\.)?(?:vk\.com|vkontakte\.ru)\/(?:video_ext\.php\?)(.*)/i)
-
-      if (youtube) {
-        return {
-          youtube: youtube
-        }
-      } else if (vimeo) {
-        return {
-          vimeo: vimeo
-        }
-      } else if (dailymotion) {
-        return {
-          dailymotion: dailymotion
-        }
-      } else if (vk) {
-        return {
-          vk: vk
-        }
-      }
-    }
-
     var link = function (contents, uri) {
       if (!uri) return contents
       var a = myDocument.createElement('a')
@@ -68,13 +36,13 @@ module.exports = {
     }
 
     var kb = UI.store
-    var links = kb.statementsMatching(subject, $rdf.sym('https://schema.org/significantLink'))
+    var significantLinks = kb.statementsMatching(subject, $rdf.sym('https://schema.org/significantLink'))
 
     var containerDiv = myDocument.createElement('div')
     containerDiv.setAttribute('style', 'width : 100%; max-width: 1310px; margin: 0 auto; overflow: hidden; padding: 5px; text-align: center;')
 
-    for (var i = 0; i < links.length; i++) {
-      var l = links[i].object
+    for (var i = 0; i < significantLinks.length; i++) {
+      var l = significantLinks[i].object
 
       var linkDiv = myDocument.createElement('figure')
       linkDiv.setAttribute('style', 'float:left; width: 30%; word-wrap: break-word; position: relative; min-width: 150px; min-height: 150px; margin: 10px;')
@@ -92,9 +60,9 @@ module.exports = {
         contentEl.appendChild(thumb)
         linkDiv.appendChild(contentEl)
         contentEl.href = l.uri
-        contentEl.onclick = function() {
+        contentEl.onclick = function () {
           var contentURI = this.href
-          UI.outline.GotoSubject(  UI.store.sym ( contentURI ), true, undefined, true, undefined )
+          UI.outline.GotoSubject(UI.store.sym(contentURI), true, undefined, true, undefined)
           history.pushState({}, contentURI, contentURI)
         }
 
@@ -102,7 +70,7 @@ module.exports = {
         caption.innerHTML = displayText
         linkDiv.appendChild(caption)
       } else {
-        var contentEl = link(text(displayText), l.uri)
+        contentEl = link(text(displayText), l.uri)
         linkDiv.appendChild(contentEl)
       }
 
