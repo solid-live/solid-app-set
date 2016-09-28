@@ -87,6 +87,8 @@ paneModule.register(require('./playlist/playlistPane.js')) // Basic playlist vie
 paneModule.register(require('./playlist/playlistSlotPane.js')) // Basic playlist view
 paneModule.register(require('./playlist/collectionPagePane.js')) // Basic playlist view
 paneModule.register(require('./imagePane.js')) // Basic image view
+paneModule.register(require('./playlist/playlistPane.js')) // Basic playlist view
+
 
 paneModule.register(require('./credit/creditPane.js')) // Basic credit view
 
